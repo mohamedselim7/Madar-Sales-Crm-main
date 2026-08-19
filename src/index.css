@@ -1,0 +1,421 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "IBM Plex Sans Arabic", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-primary: #00BFFF;
+  --color-dark: #020B22;
+  --color-bg: #020B22;
+
+  /* Overrides for html2canvas compatibility (avoids oklch/oklab) */
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
+  --color-slate-950: #020617;
+
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-gray-950: #030712;
+
+  --color-blue-50: #eff6ff;
+  --color-blue-100: #dbeafe;
+  --color-blue-200: #bfdbfe;
+  --color-blue-300: #93c5fd;
+  --color-blue-400: #60a5fa;
+  --color-blue-500: #3b82f6;
+  --color-blue-600: #2563eb;
+  --color-blue-700: #1d4ed8;
+  --color-blue-800: #1e40af;
+  --color-blue-900: #1e3a8a;
+  --color-blue-950: #172554;
+
+  --color-indigo-50: #f5f3ff;
+  --color-indigo-100: #ede9fe;
+  --color-indigo-200: #ddd6fe;
+  --color-indigo-300: #c4b5fd;
+  --color-indigo-400: #a78bfa;
+  --color-indigo-500: #8b5cf6;
+  --color-indigo-600: #7c3aed;
+  --color-indigo-700: #6d28d9;
+  --color-indigo-800: #5b21b6;
+  --color-indigo-900: #4c1d95;
+  --color-indigo-950: #2e1065;
+
+  --color-sky-400: #38bdf8;
+  --color-sky-500: #0ea5e9;
+  --color-sky-600: #0284c7;
+
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #059669;
+
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+  --color-amber-600: #d97706;
+
+  --color-purple-400: #c084fc;
+  --color-purple-500: #a855f7;
+  --color-purple-600: #9333ea;
+
+  --color-fuchsia-400: #e879f9;
+  --color-fuchsia-500: #d946ef;
+  --color-fuchsia-600: #c026d3;
+
+  --color-red-400: #f87171;
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
+
+  --color-rose-400: #fb7185;
+  --color-rose-500: #f43f5e;
+  --color-rose-600: #e11d48;
+
+  --color-teal-400: #2dd4bf;
+  --color-teal-500: #14b8a6;
+  --color-teal-600: #0d9488;
+
+  --color-cyan-400: #22d3ee;
+  --color-cyan-500: #06b6d4;
+  --color-cyan-600: #0891b2;
+
+  --color-lime-400: #a3e635;
+  --color-lime-500: #84cc16;
+  --color-lime-600: #65a30d;
+
+  --color-pink-400: #f472b6;
+  --color-pink-500: #ec4899;
+  --color-pink-600: #db2777;
+}
+
+@layer base {
+  body {
+    @apply text-slate-200 antialiased;
+    background-color: #020B22 !important;
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Ultimate enterprise grid pattern + radial ambient glows */
+  body::before {
+    content: "" !important;
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: -2 !important;
+    background-color: #020B22 !important;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+      radial-gradient(at 50% 0%, rgba(0, 191, 255, 0.1) 0px, transparent 40%),
+      radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(0, 191, 255, 0.08) 0px, transparent 50%) !important;
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat !important;
+  }
+
+  body::after {
+    content: "" !important;
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: -1 !important;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px) !important;
+    background-size: 80px 80px !important;
+    pointer-events: none !important;
+  }
+}
+
+/* Stable grain noise texture overlay */
+.premium-noise-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E") !important;
+}
+
+.shadow-premium {
+  box-shadow: 
+    0 10px 30px -10px rgba(0, 0, 0, 0.6), 
+    0 0 20px 0 rgba(0, 191, 255, 0.05);
+}
+
+/* Glassmorphism Classes with Elegant Edge Highlights */
+.glass-panel {
+  background: linear-gradient(135deg, rgba(2, 11, 34, 0.6) 0%, rgba(2, 11, 34, 0.3) 100%) !important;
+  backdrop-filter: blur(24px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(140%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 
+    0 12px 40px 0 rgba(0, 0, 0, 0.6),
+    inset 0 1px 1px rgba(255, 255, 255, 0.06) !important;
+}
+
+.glass-panel-heavy {
+  background: linear-gradient(135deg, rgba(2, 11, 34, 0.85) 0%, rgba(2, 11, 34, 0.7) 100%) !important;
+  backdrop-filter: blur(32px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(150%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 
+    0 24px 60px 0 rgba(0, 0, 0, 0.8),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1) !important;
+}
+
+.glass-panel-hover {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.glass-panel-hover:hover {
+  background: linear-gradient(135deg, rgba(2, 11, 34, 0.7) 0%, rgba(2, 11, 34, 0.45) 100%) !important;
+  border-color: rgba(0, 191, 255, 0.25) !important;
+  box-shadow: 
+    0 24px 50px 0 rgba(0, 0, 0, 0.7),
+    0 0 30px 0 rgba(0, 191, 255, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
+  transform: translateY(-1px);
+}
+
+.glass-input {
+  background-color: rgba(2, 11, 34, 0.4) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  color: #ffffff !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.glass-input:focus {
+  background-color: rgba(2, 11, 34, 0.6) !important;
+  border-color: rgba(0, 191, 255, 0.4) !important;
+  box-shadow: 
+    0 0 20px rgba(0, 191, 255, 0.12),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05) !important;
+  outline: none !important;
+}
+
+/* System-wide stylized custom selects/dropdown lists */
+select {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-image: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2300BFFF%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-size: 16px 16px !important;
+  background-position: left 14px center !important;
+  padding-left: 2.5rem !important;
+  border-left: 3px solid #00BFFF !important; /* Premium left-accent dropdown indicator */
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  color-scheme: dark !important;
+}
+
+select:hover, select:focus {
+  border-color: rgba(0, 191, 255, 0.4) !important;
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.15) !important;
+}
+
+/* Force dark-mode dropdown lists with elegant fonts for all browsers */
+select option {
+  background-color: #020b22 !important; /* Premium Deep Navy background */
+  color: #f1f5f9 !important; /* High contrast text */
+  font-weight: 500 !important;
+  padding: 12px 16px !important;
+}
+
+/* Style selected option if browser supports it */
+select option:checked,
+select option:hover {
+  background-color: #0b1e4a !important;
+  color: #00BFFF !important;
+}
+
+/* Compensate for standard LTR directions if active */
+[dir="ltr"] select, select[dir="ltr"] {
+  background-position: right 14px center !important;
+  padding-right: 2.5rem !important;
+  padding-left: 1rem !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-right: 3px solid #00BFFF !important;
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.04) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.text-shadow-sky {
+  text-shadow: 0 0 12px rgba(0, 191, 255, 0.4);
+}
+
+.shadow-brand {
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 191, 255, 0.25), 
+    0 4px 6px -4px rgba(0, 191, 255, 0.1);
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(0, 191, 255, 0.15);
+  border-radius: 9999px;
+  transition: background 0.3s ease;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 191, 255, 0.3);
+}
+
+/* Dropdown Visibility Fixes */
+select option {
+  @apply text-white;
+  background-color: #020B22 !important;
+}
+
+[color-scheme="dark"] select option,
+.dark select option {
+  background-color: #020B22 !important;
+  @apply text-white;
+}
+
+/* Ensure placeholder visibility in dark inputs */
+input::placeholder,
+textarea::placeholder {
+  @apply opacity-40;
+}
+
+/* Custom utility to hide scrollbars completely */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
+}
+
+/* HIGH-SPEED STYLISH & INTERACTIVE LOGO ANIMATIONS */
+@keyframes high-speed-elegant-float {
+  0% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.1));
+  }
+  20% {
+    transform: translateY(-5px) rotate(4deg) scale(1.02);
+    filter: drop-shadow(0 4px 6px rgba(0, 191, 255, 0.25));
+  }
+  40% {
+    transform: translateY(0px) rotate(-3deg) scale(0.98);
+    filter: drop-shadow(0 0 2px rgba(99, 102, 241, 0.2));
+  }
+  60% {
+    transform: translateY(4px) rotate(2deg) scale(1.03);
+    filter: drop-shadow(0 -4px 6px rgba(244, 63, 94, 0.2));
+  }
+  80% {
+    transform: translateY(-2px) rotate(-1deg) scale(0.99);
+    filter: drop-shadow(0 2px 4px rgba(6, 182, 212, 0.15));
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.1));
+  }
+}
+
+.animate-fast-interactive-logo {
+  animation: high-speed-elegant-float 1.8s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+@keyframes fast-spin-glow-aura {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.15);
+    opacity: 0.85;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.6;
+  }
+}
+
+.animate-fast-glow-spin {
+  animation: fast-spin-glow-aura 3.5s linear infinite;
+}
+
+@keyframes rapid-aurora-pulse {
+  0%, 100% {
+    transform: scale(0.9) rotate(0deg);
+    filter: blur(12px) brightness(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2) rotate(-180deg);
+    filter: blur(18px) brightness(1.4);
+    opacity: 0.8;
+  }
+}
+
+.animate-rapid-glow-pulse {
+  animation: rapid-aurora-pulse 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* ELIMINATE ALL INTERACTIVE MOTION, COVER TRANSITIONS, HOVER LIFTS, AND ANIMATIONS TO GUARANTEE BLISTERING SMOOTHNESS */
+
+/* Disable transition durations and delays for all non-spinning elements to make clicks, cards, and pages render immediately */
+*:not(.animate-spin) {
+  transition-property: none !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
+
+/* Stop background gradient animations, ambient pulse loops, bouncing, or floating logos */
+.animate-fast-interactive-logo,
+.animate-fast-glow-spin,
+.animate-rapid-glow-pulse,
+.animate-pulse,
+.animate-bounce,
+.animate-ping {
+  animation: none !important;
+}
+
+/* Stop zoom scaling or lift-up transforms on interactive hovering/active events safely */
+.hover\:scale-105:hover,
+.hover\:scale-102:hover,
+.hover\:scale-101:hover,
+.hover\:scale-\[1\.02\]:hover,
+.hover\:scale-\[1\.01\]:hover,
+.active\:scale-95:active,
+.active\:scale-98:active,
+.active\:scale-\[0\.95\]:active,
+.active\:scale-\[0\.98\]:active,
+.glass-panel-hover:hover {
+  scale: 1 !important;
+  transform: none !important;
+}
+
+

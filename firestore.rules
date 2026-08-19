@@ -1,0 +1,166 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Default Deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // -------------------------------------------------------------------------
+    // HELPER FUNCTIONS
+    // -------------------------------------------------------------------------
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // roles/{uid} is admin-managed ONLY (see rule below) — never self-writable,
+    // which is what makes it safe to trust for authorization decisions.
+    function myRole() {
+      return isSignedIn()
+        ? get(/databases/$(database)/documents/roles/$(request.auth.uid)).data
+        : null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'abdelrahmanahmed011147@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        (exists(/databases/$(database)/documents/roles/$(request.auth.uid)) && myRole().role == 'admin')
+      );
+    }
+
+    function ownsLead(resourceData) {
+      return isSignedIn() && (
+        resourceData.agentId   == request.auth.uid ||
+        resourceData.managerId == request.auth.uid
+      );
+    }
+
+    // -------------------------------------------------------------------------
+    // ROLE ASSIGNMENT — admin-only writes, prevents self-escalation
+    // -------------------------------------------------------------------------
+    match /roles/{uid} {
+      allow read: if isSignedIn() && (request.auth.uid == uid || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    // -------------------------------------------------------------------------
+    // RULES
+    // -------------------------------------------------------------------------
+
+    match /settings/{settingId} {
+      allow get: if true;
+      allow list: if isSignedIn();
+      allow create, update, delete: if isSignedIn();
+    }
+
+    match /clients/{clientId} {
+      allow get, list: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update, delete: if isSignedIn(); // TODO: narrow this to department/role once real per-department rules are defined — do NOT restrict to isAdmin() only
+    }
+
+    match /marketing_strategies/{strategyId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isSignedIn();
+    }
+
+    match /tasks/{taskId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isSignedIn();
+    }
+
+    // Role-scoped: an agent can only read/write their own leads, a manager
+    // only their team's, admin everything. `list` cannot be filtered
+    // per-document by Firestore rules — the client MUST issue scoped
+    // queries (where("agentId","==",uid)) for `list` to be meaningful;
+    // this rule is the hard backstop for get/update/delete either way.
+    match /sales_leads/{leadId} {
+      allow get: if isAdmin() || ownsLead(resource.data);
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() && (
+        isAdmin() || request.resource.data.agentId == request.auth.uid
+      );
+      allow update, delete: if isAdmin() || ownsLead(resource.data);
+    }
+
+    match /telesales_leads/{leadId} {
+      allow get: if isAdmin() || ownsLead(resource.data);
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() && (
+        isAdmin() || request.resource.data.agentId == request.auth.uid
+      );
+      allow update, delete: if isAdmin() || ownsLead(resource.data);
+    }
+
+    match /clientSocialLinks/{linkId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isSignedIn();
+    }
+
+    match /socialAnalysis/{analysisId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isSignedIn();
+    }
+
+    match /aiAnalysis/{analysisId} {
+      allow get, list: if isSignedIn() || true; // Allow share page access
+      allow create, update, delete: if isSignedIn();
+    }
+
+    match /users/{userId} {
+      allow get, list: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow create, update: if isSignedIn() && request.auth.uid == userId;
+      allow delete: if isAdmin();
+    }
+
+    match /test/{testId} {
+      allow get: if true;
+    }
+
+    match /system_versions/{versionId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+
+    match /notifications/{notificationId} {
+      allow read, get, list: if isSignedIn();
+      allow create, update, delete: if isSignedIn();
+    }
+
+    match /filter_sessions/{sessionId} {
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow get: if isSignedIn() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    match /background_jobs/{jobId} {
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow get: if isSignedIn() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    match /whatsapp_templates/{templateId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /whatsapp_rules/{ruleId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /whatsapp_campaigns/{campaignId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /whatsapp_logs/{logId} {
+      allow read, write: if isSignedIn();
+    }
+  }
+}

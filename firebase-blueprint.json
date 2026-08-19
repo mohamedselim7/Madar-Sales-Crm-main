@@ -1,0 +1,530 @@
+{
+  "entities": {
+    "Client": {
+      "title": "Client",
+      "description": "Represents a client and their contract details in the Agency OS.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "clientCode": { "type": "string" },
+        "stage": { "type": "string", "enum": ["received_from_sales", "cr_received", "sent_to_marketing_manager"] },
+        "contract": {
+          "type": "object",
+          "properties": {
+            "startDate": { "type": "string", "format": "date-time" },
+            "endDate": { "type": "string", "format": "date-time" },
+            "contractAmount": { "type": "number" },
+            "currency": { "type": "string" },
+            "paymentMethod": { "type": "string" },
+            "paidAmount": { "type": "number" },
+            "remainingAmount": { "type": "number" },
+            "contractMonths": { "type": "number" },
+            "monthlyValue": { "type": "number" }
+          }
+        },
+        "clientInfo": {
+          "type": "object",
+          "properties": {
+            "clientName": { "type": "string" },
+            "phone": { "type": "string" },
+            "email": { "type": "string" },
+            "businessName": { "type": "string" },
+            "websiteStatus": { "type": "string", "enum": ["exists", "create", "not_available"] },
+            "websiteUrl": { "type": "string" },
+            "salesBrief": { "type": "string" },
+            "serviceType": { "type": "string" }
+          }
+        },
+        "salesTeam": {
+          "type": "object",
+          "properties": {
+            "cso": { "type": "string" },
+            "salesManager": { "type": "string" },
+            "salesAgent": { "type": "string" },
+            "teleSalesManager": { "type": "string" },
+            "teleSalesAgent": { "type": "string" }
+          }
+        },
+        "crData": {
+          "type": "object",
+          "properties": {
+            "accountManagerBrief": { "type": "string" },
+            "workGroupName": { "type": "string" },
+            "clientStatus": { "type": "string" },
+            "accountManagerName": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        },
+        "marketingData": {
+          "type": "object",
+          "properties": {
+            "marketingManagerName": { "type": "string" }
+          }
+        },
+        "satisfactionRatings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": { "type": "string", "format": "date-time" },
+              "rating": { "type": "number" },
+              "comment": { "type": "string" },
+              "period": { "type": "string" }
+            },
+            "required": ["date", "rating"]
+          }
+        },
+        "updateLog": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": { "type": "string", "format": "date-time" },
+              "action": { "type": "string" },
+              "updatedFields": { "type": "array", "items": { "type": "string" } },
+              "oldValue": { "type": "object" },
+              "newValue": { "type": "object" }
+            }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["clientCode", "stage", "clientInfo", "contract"]
+    },
+    "Setting": {
+      "title": "Setting",
+      "description": "General setting entity for dropdown lists.",
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "value": { "type": "string" }
+            }
+          }
+        },
+        "teamSettings": {
+          "type": "object",
+          "properties": {
+            "adsTeam": { "type": "array", "items": { "$ref": "#/entities/TeamMember" } },
+            "seoTeam": { "type": "array", "items": { "$ref": "#/entities/TeamMember" } },
+            "contentTeam": { "type": "array", "items": { "$ref": "#/entities/TeamMember" } },
+            "designTeam": { "type": "array", "items": { "$ref": "#/entities/TeamMember" } },
+            "editorTeam": { "type": "array", "items": { "$ref": "#/entities/TeamMember" } }
+          }
+        }
+      }
+    },
+    "TeamMember": {
+      "title": "Team Member",
+      "description": "Represents a member of a specific department team.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "position": { "type": "string" },
+        "active": { "type": "boolean" }
+      },
+      "required": ["id", "name", "active"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Represents a task assigned to a team member.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "taskTitle": { "type": "string" },
+        "taskDescription": { "type": "string" },
+        "optionalLink": { "type": "string" },
+        "department": { "type": "string", "enum": ["Ads", "SEO", "Content", "Design", "Editor"] },
+        "clientId": { "type": "string" },
+        "clientCode": { "type": "string" },
+        "businessName": { "type": "string" },
+        "assignedTo": { "type": "string" },
+        "priority": { "type": "string", "enum": ["low", "medium", "high", "urgent"] },
+        "dueDate": { "type": "string", "format": "date" },
+        "status": { "type": "string", "enum": ["new", "in_progress", "under_review", "done", "cancelled"] },
+        "unread": { "type": "boolean" },
+        "notes": { "type": "string" },
+        "logs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": { "type": "string", "format": "date-time" },
+              "action": { "type": "string" },
+              "oldValue": { "type": "object" },
+              "newValue": { "type": "object" },
+              "user": { "type": "string" }
+            }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["taskTitle", "department", "clientId", "assignedTo", "priority", "status"]
+    },
+    "MarketingStrategy": {
+      "title": "Marketing Strategy",
+      "description": "Represents a marketing marketing strategy checklist for a client.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "clientId": { "type": "string" },
+        "clientName": { "type": "string" },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "title": { "type": "string" },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "text": { "type": "string" },
+                    "isCompleted": { "type": "boolean" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "SystemVersion": {
+      "title": "System Version",
+      "description": "Represents a snapshot of the system state for version control.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "versionName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "modifiedModules": { "type": "array", "items": { "type": "string" } },
+        "notes": { "type": "string" },
+        "rollbackAvailable": { "type": "boolean" },
+        "status": { "type": "string" }
+      },
+      "required": ["versionName", "createdAt"]
+    },
+    "TelesalesLead": {
+      "title": "Telesales Lead",
+      "description": "Represents a lead in the Telesales Hub.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "clientName": { "type": "string" },
+        "phone": { "type": "string" },
+        "field": { "type": "string" },
+        "dataSource": { "type": "string" },
+        "storeLink": { "type": "string" },
+        "businessType": { "type": "string" },
+        "note": { "type": "string" },
+        "firstContactDate": { "type": "string", "format": "date" },
+        "contactType": { "type": "string" },
+        "whatsappMessageText": { "type": "string" },
+        "response": { "type": "string" },
+        "firstContactOutcome": { "type": "string" },
+        "dateFollow": { "type": "string", "format": "date" },
+        "followUp1": { "type": "string" },
+        "followUp2": { "type": "string" },
+        "followUp3": { "type": "string" },
+        "followUp4": { "type": "string" },
+        "meetingStatus": { "type": "string" },
+        "agentId": { "type": "string" },
+        "agentName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["clientName", "phone", "agentName"]
+    },
+    "FilterSession": {
+      "title": "Filter Session",
+      "description": "Represents an Excel/CSV filtering and slicing run session records.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fileName": { "type": "string" },
+        "totalContacts": { "type": "number" },
+        "storeCount": { "type": "number" },
+        "socialCount": { "type": "number" },
+        "creationCount": { "type": "number" },
+        "brokenCount": { "type": "number" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "operatorName": { "type": "string" }
+      },
+      "required": ["fileName", "totalContacts"]
+    },
+    "SalesLead": {
+      "title": "Sales Lead",
+      "description": "Represents a lead in the Sales Hub.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "clientName": { "type": "string" },
+        "phone": { "type": "string" },
+        "field": { "type": "string" },
+        "dataSource": { "type": "string" },
+        "storeLink": { "type": "string" },
+        "businessType": { "type": "string" },
+        "note": { "type": "string" },
+        "firstContactDate": { "type": "string", "format": "date" },
+        "contactType": { "type": "string" },
+        "whatsappMessageText": { "type": "string" },
+        "response": { "type": "string" },
+        "firstContactOutcome": { "type": "string" },
+        "dateFollow": { "type": "string", "format": "date" },
+        "followUp1": { "type": "string" },
+        "followUp2": { "type": "string" },
+        "followUp3": { "type": "string" },
+        "followUp4": { "type": "string" },
+        "meetingStatus": { "type": "string" },
+        "agentId": { "type": "string" },
+        "agentName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["clientName", "phone", "agentName"]
+    },
+    "ClientSocialLink": {
+      "title": "Client Social Link",
+      "description": "Captured social platform link for clients.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "clientId": { "type": "string" },
+        "platform": { "type": "string" },
+        "url": { "type": "string" }
+      }
+    },
+    "SocialAnalysis": {
+      "title": "Social Analysis",
+      "description": "Marketing analysis of custom social platforms.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "clientId": { "type": "string" },
+        "score": { "type": "number" },
+        "details": { "type": "string" }
+      }
+    },
+    "AIAnalysis": {
+      "title": "AI Analysis",
+      "description": "Website and marketing intelligence analyzed by AI.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "clientId": { "type": "string" },
+        "prompt": { "type": "string" },
+        "response": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "User": {
+      "title": "User",
+      "description": "Synchronized details of active agency users logging in.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "lastLogin": { "type": "string", "format": "date-time" }
+      }
+    },
+    "BackgroundJob": {
+      "title": "Background Job",
+      "description": "Represents a background filtering execution job run on the server.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fileName": { "type": "string" },
+        "uploadedAt": { "type": "string", "format": "date-time" },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "completedAt": { "type": "string", "format": "date-time" },
+        "progress": { "type": "number" },
+        "totalRows": { "type": "number" },
+        "uniqueClients": { "type": "number" },
+        "processedRows": { "type": "number" },
+        "estimatedTimeRemaining": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "processing", "completed", "failed", "cancelled"] },
+        "failureReason": { "type": "string" },
+        "operatorName": { "type": "string" },
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" }
+      },
+      "required": ["fileName", "uploadedAt", "status", "progress"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "Global collaborative system notification schema.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "type": { "type": "string", "enum": ["info", "success", "warning", "error", "client", "lead", "task", "system"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "readBy": { "type": "array", "items": { "type": "string" } },
+        "category": { "type": "string" },
+        "link": { "type": "string" },
+        "triggeredBy": { "type": "string" }
+      },
+      "required": ["title", "message", "type"]
+    },
+    "WhatsAppTemplate": {
+      "title": "WhatsAppTemplate",
+      "description": "Represents a reusable WhatsApp message template.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string", "enum": ["text", "image", "document"] },
+        "content": { "type": "string" },
+        "mediaUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "type", "content"]
+    },
+    "WhatsAppRule": {
+      "title": "WhatsAppRule",
+      "description": "Automation rule that triggers on client status change.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "trigger": { "type": "string", "enum": ["status_change_telesales", "status_change_sales", "new_lead_telesales"] },
+        "triggerValue": { "type": "string" },
+        "templateId": { "type": "string" },
+        "delayMinutes": { "type": "number" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "trigger", "triggerValue", "templateId", "delayMinutes", "active"]
+    },
+    "WhatsAppCampaign": {
+      "title": "WhatsAppCampaign",
+      "description": "Represents a manual bulk messaging campaign.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "target": { "type": "string", "enum": ["telesales", "sales"] },
+        "filterStatus": { "type": "string" },
+        "templateId": { "type": "string" },
+        "messageText": { "type": "string" },
+        "delaySeconds": { "type": "number" },
+        "totalContacts": { "type": "number" },
+        "sentCount": { "type": "number" },
+        "failedCount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "sending", "paused", "completed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "target", "templateId", "status", "delaySeconds"]
+    },
+    "WhatsAppLog": {
+      "title": "WhatsAppLog",
+      "description": "Log of a WhatsApp message sent or failed.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "clientName": { "type": "string" },
+        "phone": { "type": "string" },
+        "message": { "type": "string" },
+        "templateId": { "type": "string" },
+        "templateName": { "type": "string" },
+        "type": { "type": "string", "enum": ["individual", "campaign", "automation"] },
+        "status": { "type": "string", "enum": ["sent", "failed", "pending"] },
+        "failureReason": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "sentBy": { "type": "string" },
+        "campaignId": { "type": "string" },
+        "ruleId": { "type": "string" }
+      },
+      "required": ["phone", "message", "type", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "whatsapp_templates": {
+      "schema": "WhatsAppTemplate",
+      "description": "Stores all reusable WhatsApp templates."
+    },
+    "whatsapp_rules": {
+      "schema": "WhatsAppRule",
+      "description": "Stores all status change automation rules."
+    },
+    "whatsapp_campaigns": {
+      "schema": "WhatsAppCampaign",
+      "description": "Stores manual bulk messaging campaigns."
+    },
+    "whatsapp_logs": {
+      "schema": "WhatsAppLog",
+      "description": "Logs of all WhatsApp messages processed."
+    },
+    "notifications": {
+      "schema": "Notification",
+      "description": "Global real-time collaborative system notifications with premium web chimes."
+    },
+    "background_jobs": {
+      "schema": "BackgroundJob",
+      "description": "Stores all asynchronous CSV/Excel filtering background jobs."
+    },
+    "clients": {
+      "schema": "Client",
+      "description": "Store all client agreements and tracking data."
+    },
+    "settings": {
+      "schema": "Setting",
+      "description": "Stores various configuration settings for the system."
+    },
+    "marketing_strategies": {
+      "schema": "MarketingStrategy",
+      "description": "Store marketing strategies and their status."
+    },
+    "system_versions": {
+      "schema": "SystemVersion",
+      "description": "Log of system snapshots and version history."
+    },
+    "telesales_leads": {
+      "schema": "TelesalesLead",
+      "description": "Store all leads under the Telesales Hub."
+    },
+    "filter_sessions": {
+      "schema": "FilterSession",
+      "description": "Stores logs and statistics of filtered client Excel sheets."
+    },
+    "sales_leads": {
+      "schema": "SalesLead",
+      "description": "Store all leads generated/promoted to the Sales Hub."
+    },
+    "clientSocialLinks": {
+      "schema": "ClientSocialLink",
+      "description": "Direct social platform links captured for various accounts."
+    },
+    "socialAnalysis": {
+      "schema": "SocialAnalysis",
+      "description": "Deeper analysis elements of platform contents."
+    },
+    "aiAnalysis": {
+      "schema": "AIAnalysis",
+      "description": "Complete website SEO and digital marketing reports generated."
+    },
+    "users": {
+      "schema": "User",
+      "description": "Dynamic lookup profiles for members logging into the agency OS."
+    }
+  }
+}

@@ -1,0 +1,11 @@
+node_modules/
+build/
+firebase-service-account.json
+src/firebase-service-account.json
+dist/
+server.js
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example

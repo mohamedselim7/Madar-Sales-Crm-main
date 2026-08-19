@@ -1,0 +1,32 @@
+                       <div className="flex flex-col gap-6 bg-sky-500/5 rounded-3xl border border-sky-500/10 p-6 text-right">
+                          <div className="flex items-center justify-between">
+                            <div>
+                               <h4 className="text-xl font-black text-white">{strategy.name}</h4>
+                               <p className="text-xs text-slate-400 mt-1">تاريخ البدء: {new Date(strategy.createdAt).toLocaleDateString('ar-SA')}</p>
+                            </div>
+                            <div className="px-4 py-2 bg-sky-500/20 text-sky-400 rounded-xl text-xs font-black uppercase tracking-widest border border-sky-500/30">
+                               قيد التنفيذ
+                            </div>
+                          </div>
+
+                          {strategy.finalStrategyLink && (
+                             <div className="pt-6 border-t border-sky-500/10">
+                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 block">رابط الاستراتيجية النهائي</label>
+                                <a 
+                                  href={strategy.finalStrategyLink} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-3 p-4 bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 rounded-2xl border border-sky-500/20 transition-all group"
+                                >
+                                   <div className="w-10 h-10 bg-sky-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                      <Link2 size={20} />
+                                   </div>
+                                   <div className="flex-1 min-w-0">
+                                      <p className="text-sm font-bold truncate">{strategy.finalStrategyLink}</p>
+                                      <p className="text-[10px] font-medium opacity-60">اضغط لفتح الملف</p>
+                                   </div>
+                                   <ExternalLink size={18} />
+                                </a>
+                             </div>
+                          )}
+                       </div>

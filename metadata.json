@@ -1,0 +1,8 @@
+{
+  "name": "MADAR SALES CRM",
+  "description": "Comprehensive internal agency management system with MADAR SALES CRM, AI Strategic Analytics, and built-in Version Control System (VCS).",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
